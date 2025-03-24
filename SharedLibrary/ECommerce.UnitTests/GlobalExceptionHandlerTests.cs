@@ -3,7 +3,7 @@ using ECommerce.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Moq;
 
-namespace ECommerce.UnitTests.Shared;
+namespace ECommerce.UnitTests;
 
 public class GlobalExceptionHandlerTests
 {
