@@ -1,16 +1,19 @@
 using ECommerce.Shared.Services.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Serilog;
 
 namespace ECommerce.Shared.Services;
 
 public class LoggerService : ILoggerService
 {
-    public LoggerService()
+    public LoggerService(IConfiguration configuration)
     {
+        var fileName = configuration.GetSection("Serilog:FileName").Value ?? "log";
+
         Log.Logger = new LoggerConfiguration()
            .MinimumLevel.Debug()
            .WriteTo.Console()
-           .WriteTo.File("logs/log-*.txt", rollingInterval: RollingInterval.Day)
+           .WriteTo.File($"logs/{fileName}-.txt", rollingInterval: RollingInterval.Day)
            .CreateLogger();
     }
     public void LogError(string message, Exception? exception = null)
