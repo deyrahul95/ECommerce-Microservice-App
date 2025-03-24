@@ -35,6 +35,10 @@ public class GlobalExceptionHandler(RequestDelegate next, ILoggerService logger)
                 await ModifyResponseHeader(context, "You don't have required access.");
                 break;
 
+            case StatusCodes.Status503ServiceUnavailable:
+                await ModifyResponseHeader(context, "Sorry, service is unavailable!");
+                break;
+
             default:
                 return;
         }

@@ -73,6 +73,7 @@ public class GlobalExceptionHandlerTests
     [InlineData(StatusCodes.Status429TooManyRequests)]
     [InlineData(StatusCodes.Status401Unauthorized)]
     [InlineData(StatusCodes.Status403Forbidden)]
+    [InlineData(StatusCodes.Status503ServiceUnavailable)]
     public async Task InvokeAsync_Should_Modify_Response_For_Specific_StatusCodes(int statusCode)
     {
         // Arrange
