@@ -4,7 +4,6 @@ using ECommerce.Shared.Services;
 using ECommerce.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -13,17 +12,14 @@ namespace ECommerce.Shared;
 
 public static class Extensions
 {
-    public static IServiceCollection AddSharedServices<TContext>(
+    public static IServiceCollection AddSharedServices(
         this IServiceCollection services,
-        IConfiguration configuration) where TContext : DbContext
+        IConfiguration configuration)
     {
-        // Add database context
-        var sqliteConnection = configuration.GetConnectionString("SqliteConnection");
-        services.AddDbContext<TContext>(options => options.UseSqlite(sqliteConnection));
 
         services.AddJWTAuthenticationScheme(configuration);
 
-        services.AddSingleton<ILoggerService, LoggerService>();
+        services.AddScoped<ILoggerService, LoggerService>();
 
         return services;
     }

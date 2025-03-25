@@ -1,11 +1,11 @@
 using System.Linq.Expressions;
 using ECommerce.Shared.Repositories.Interfaces;
-using ECommerce.Shared.Services;
+using ECommerce.Shared.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Shared.Repositories;
 
-public class BaseRepository<T>(DbContext context, LoggerService logger) : IBaseRepository<T> where T : class
+public class BaseRepository<T>(DbContext context, ILoggerService logger) : IBaseRepository<T> where T : class
 {
     private readonly DbSet<T> dbSet = context.Set<T>();
 
