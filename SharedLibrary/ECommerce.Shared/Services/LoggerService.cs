@@ -16,6 +16,7 @@ public class LoggerService : ILoggerService
            .WriteTo.File($"logs/{fileName}-.txt", rollingInterval: RollingInterval.Day)
            .CreateLogger();
     }
+
     public void LogError(string message, Exception? exception = null)
     {
         if (exception == null)

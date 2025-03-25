@@ -16,10 +16,9 @@ public static class Extensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-
         services.AddJWTAuthenticationScheme(configuration);
 
-        services.AddScoped<ILoggerService, LoggerService>();
+        services.AddTransient<ILoggerService, LoggerService>();
 
         return services;
     }
