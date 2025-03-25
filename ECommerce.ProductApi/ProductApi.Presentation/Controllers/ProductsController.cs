@@ -53,7 +53,9 @@ public class ProductsController(IProductService productService) : ControllerBase
 
         if (response.StatusCode == HttpStatusCode.Created)
         {
-            return CreatedAtRoute("Get", new { id = response.Data?.Id }, response.Data);
+            var url = Url.Action("Get", "Products", new { id = response.Data?.Id }, Request.Scheme);
+
+            return Created(url, response);
         }
 
         if (response.StatusCode == HttpStatusCode.Conflict)

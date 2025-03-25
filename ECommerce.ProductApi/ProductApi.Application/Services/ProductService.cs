@@ -56,7 +56,9 @@ public class ProductService(IProductRepository productRepository, ILoggerService
         {
             var products = await productRepository.GetAllAsync(token);
 
-            return ProductResults<List<ProductDTO>>.PRODUCT_FETCHED(products.ToDtoList());
+            var sortedProductDTOs = products.OrderByDescending(p => p.UpdatedAt).ToDtoList();
+
+            return ProductResults<List<ProductDTO>>.PRODUCT_FETCHED(sortedProductDTOs);
         }
         catch (Exception ex)
         {
