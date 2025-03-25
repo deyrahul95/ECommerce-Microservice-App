@@ -1,8 +1,8 @@
 using System.Linq.Expressions;
-using ECommerce.Shared.Repository.Interfaces;
+using ECommerce.Shared.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.Shared.Repository;
+namespace ECommerce.Shared.Repositories;
 
 public class BaseRepository<T>(DbContext context) : IBaseRepository<T> where T : class
 {

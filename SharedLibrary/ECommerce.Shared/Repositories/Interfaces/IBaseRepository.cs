@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace ECommerce.Shared.Repository.Interfaces;
+namespace ECommerce.Shared.Repositories.Interfaces;
 
 public interface IBaseRepository<T> where T : class
 {
