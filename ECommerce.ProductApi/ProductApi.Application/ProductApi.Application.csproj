@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="../../SharedLibrary/ECommerce.Shared/ECommerce.Shared.csproj" />
     <ProjectReference Include="../ProductApi.Domain/ProductApi.Domain.csproj" />
+    <ProjectReference Include="../ProductApi.Infrastructure/ProductApi.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
