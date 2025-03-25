@@ -8,7 +8,7 @@ public class LoggerService : ILoggerService
 {
     public LoggerService(IConfiguration configuration)
     {
-        var fileName = configuration.GetSection("Serilog:FileName").Value ?? "log";
+        var fileName = configuration.GetSection("Log:FileName").Value ?? "log";
 
         Log.Logger = new LoggerConfiguration()
            .MinimumLevel.Debug()
