@@ -23,6 +23,8 @@ public class ProductDbContext(DbContextOptions options):DbContext(options)
                 t => t.HasCheckConstraint(
                     "CK_Product_Price",
                     $"[Price] >= {DBConstraint.PRODUCT_MIN_PRICE} AND [Price] <= {DBConstraint.PRODUCT_MAX_PRICE}"));
+
+            entity.HasIndex(p => p.Name).IsUnique();
         });
 
         // Seed some default data

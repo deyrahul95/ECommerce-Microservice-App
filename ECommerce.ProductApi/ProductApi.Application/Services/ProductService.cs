@@ -15,15 +15,12 @@ public class ProductService(IProductRepository productRepository, ILoggerService
     {
         try
         {
-            var existingProduct = await productRepository.GetByAsync(p => p.Name.Equals(
-                request.Name,
-                StringComparison.OrdinalIgnoreCase), token);
+            var existingProduct = await GetProductByName(request, token);
 
             if (existingProduct is not null && string.IsNullOrEmpty(existingProduct.Name) == false)
             {
-                return new ServiceResult<ProductDTO>(
-                    HttpStatusCode.Conflict,
-                    $"Product with name: {request.Name} already exists");
+                logger.LogInformation($"Requested Product already exists. Product Id: {existingProduct.Id}, Name: {existingProduct.Name}.");
+                return ProductResults<ProductDTO>.PRODUCT_NAME_CONFLICT(request.Name);
             }
 
             var product = new Product
@@ -40,25 +37,24 @@ public class ProductService(IProductRepository productRepository, ILoggerService
 
             if (newProduct == null || string.IsNullOrEmpty(newProduct.Name))
             {
-                return new ServiceResult<ProductDTO>(
-                    HttpStatusCode.InternalServerError,
-                        "Internal service failure. Please try again after some time."
-                );
+                logger.LogWarning($"Received null response from product repository. Product Id: {newProduct?.Id.ToString() ?? "N/A"}");
+                return ProductResults<ProductDTO>.INTERNAL_SERVICE_FAILURE;
             }
 
-            return new ServiceResult<ProductDTO>(
-                HttpStatusCode.Created,
-                "Product created successfully",
-                newProduct.ToDto()
-            );
+            logger.LogInformation($"Product created successfully. Id: {newProduct.Id}, Name: {newProduct.Name}");
+            return ProductResults<ProductDTO>.PRODUCT_CREATED(newProduct.ToDto());
         }
         catch (Exception ex)
         {
             logger.LogError("Failed to create Product.", ex);
-            return new ServiceResult<ProductDTO>(
-                HttpStatusCode.InternalServerError,
-                "An unknown error occurred"
-            );
+            return ProductResults<ProductDTO>.INTERNAL_SERVICE_FAILURE;
         }
+    }
+
+    private async Task<Product?> GetProductByName(CreateProductRequest request, CancellationToken token)
+    {
+        return await productRepository.GetByAsync(p => p.Name.Equals(
+            request.Name,
+            StringComparison.OrdinalIgnoreCase), token);
     }
 }
