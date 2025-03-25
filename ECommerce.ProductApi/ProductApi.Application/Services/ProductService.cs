@@ -14,7 +14,7 @@ public class ProductService(IProductRepository productRepository, ILoggerService
     {
         try
         {
-            var existingProduct = await GetProductByName(request, token);
+            var existingProduct = await productRepository.GetByName(request.Name, token);
 
             if (existingProduct is not null && string.IsNullOrEmpty(existingProduct.Name) == false)
             {
@@ -83,12 +83,5 @@ public class ProductService(IProductRepository productRepository, ILoggerService
             logger.LogError($"Failed to fetched Product. Id: {Id}", ex);
             return ProductResults<ProductDTO>.INTERNAL_SERVICE_FAILURE;
         }
-    }
-
-    private async Task<Product?> GetProductByName(CreateProductRequest request, CancellationToken token)
-    {
-        return await productRepository.GetByAsync(p => p.Name.Equals(
-            request.Name,
-            StringComparison.OrdinalIgnoreCase), token);
     }
 }
