@@ -26,50 +26,5 @@ public class ProductDbContext(DbContextOptions options):DbContext(options)
 
             entity.HasIndex(p => p.Name).IsUnique();
         });
-
-        // Seed some default data
-        SeedData(modelBuilder);
-    }
-
-    private static void SeedData(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Product>().HasData(
-            new Product
-            {
-                Id = Guid.NewGuid(),
-                Name = "Product A",
-                Quantity = 10,
-                Price = 99.99m,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            },
-            new Product
-            {
-                Id = Guid.NewGuid(),
-                Name = "Product B",
-                Quantity = 20,
-                Price = 199.99m,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            },
-            new Product
-            {
-                Id = Guid.NewGuid(),
-                Name = "Product C",
-                Quantity = 30,
-                Price = 299.99m,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            },
-            new Product
-            {
-                Id = Guid.NewGuid(),
-                Name = "Product D",
-                Quantity = 40,
-                Price = 399.99m,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            }
-        );
     }
 }
