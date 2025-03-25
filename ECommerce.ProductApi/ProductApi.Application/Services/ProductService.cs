@@ -1,4 +1,3 @@
-using System.Net;
 using ECommerce.Shared.Models;
 using ECommerce.Shared.Services.Interfaces;
 using ProductApi.Application.DTOs;
@@ -47,6 +46,41 @@ public class ProductService(IProductRepository productRepository, ILoggerService
         catch (Exception ex)
         {
             logger.LogError("Failed to create Product.", ex);
+            return ProductResults<ProductDTO>.INTERNAL_SERVICE_FAILURE;
+        }
+    }
+
+    public async Task<ServiceResult<List<ProductDTO>>> GetAllProducts(CancellationToken token = default)
+    {
+        try
+        {
+            var products = await productRepository.GetAllAsync(token);
+
+            return ProductResults<List<ProductDTO>>.PRODUCT_FETCHED(products.ToDtoList());
+        }
+        catch (Exception ex)
+        {
+            logger.LogError("Failed to fetched Products.", ex);
+            return ProductResults<List<ProductDTO>>.INTERNAL_SERVICE_FAILURE;
+        }
+    }
+
+    public async Task<ServiceResult<ProductDTO>> GetProduct(Guid Id, CancellationToken token = default)
+    {
+        try
+        {
+            var product = await productRepository.FindByIdAsync(Id, token);
+
+            if (product is null)
+            {
+                return ProductResults<ProductDTO>.PRODUCT_NOT_FOUND(Id);
+            }
+
+            return ProductResults<ProductDTO>.PRODUCT_FETCHED(product.ToDto());
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"Failed to fetched Product. Id: {Id}", ex);
             return ProductResults<ProductDTO>.INTERNAL_SERVICE_FAILURE;
         }
     }

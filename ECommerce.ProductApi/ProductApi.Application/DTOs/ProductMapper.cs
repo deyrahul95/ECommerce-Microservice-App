@@ -29,9 +29,9 @@ public static class ProductMapper
         );
     }
 
-    public static List<ProductDTO> ToDtoList(this List<Product> products)
+    public static List<ProductDTO> ToDtoList(this IEnumerable<Product> products)
     {
-        if (products == null || products.Count == 0)
+        if (products == null || products.Any() == false)
         {
             return [];
         }

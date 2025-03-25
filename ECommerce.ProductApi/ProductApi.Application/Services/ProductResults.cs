@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Net;
 using ECommerce.Shared.Models;
 
@@ -17,4 +18,13 @@ public static class ProductResults<T> where T : class
         HttpStatusCode.Created,
         "Product created successfully",
         data);
+
+    public static ServiceResult<T> PRODUCT_FETCHED(T data) => new(
+        HttpStatusCode.OK,
+        data is IList ? "Products fetched successfully" : "Product fetched successfully",
+        data);
+
+    public static ServiceResult<T> PRODUCT_NOT_FOUND(Guid id) => new(
+        HttpStatusCode.NotFound,
+        $"No product found with Id: {id}");
 }

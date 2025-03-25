@@ -29,7 +29,7 @@ public class BaseRepository<T>(DbContext context, LoggerService logger) : IBaseR
     {
         try
         {
-            return await dbSet.ToListAsync(token);
+            return await dbSet.AsNoTracking().ToListAsync(token);
         }
         catch (Exception ex)
         {
@@ -55,7 +55,7 @@ public class BaseRepository<T>(DbContext context, LoggerService logger) : IBaseR
     {
         try
         {
-            return await dbSet.FindAsync([predicate], cancellationToken: token);
+            return await dbSet.AsNoTracking().Where(predicate).FirstOrDefaultAsync(token);
         }
         catch (Exception ex)
         {
