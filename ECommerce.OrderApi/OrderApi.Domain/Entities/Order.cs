@@ -21,7 +21,7 @@ public class Order
 
     [Required]
     [TodayDate]
-    public DateTime OrderDate { get; set; } = DateTime.UtcNow;
+    public DateTime OrderedDate { get; set; } = DateTime.UtcNow;
 
     public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
 }

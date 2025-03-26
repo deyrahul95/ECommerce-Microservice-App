@@ -5,6 +5,6 @@ public record OrderDTO(
     Guid ProductId,
     Guid ClientId,
     int PurchaseQuantity,
-    DateTime OrderDate,
+    DateTime OrderedDate,
     DateTime? LastUpdated = null
 );

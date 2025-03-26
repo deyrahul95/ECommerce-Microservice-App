@@ -11,7 +11,7 @@ public static class OrderMapper
             ProductId: order.ProductId,
             ClientId: order.ClientId,
             PurchaseQuantity: order.PurchasedQuantity,
-            OrderDate: order.OrderDate,
+            OrderedDate: order.OrderedDate,
             LastUpdated: order.LastUpdated
         );
     }
