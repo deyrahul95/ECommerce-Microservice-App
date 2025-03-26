@@ -4,19 +4,6 @@ namespace ProductApi.Application.DTOs;
 
 public static class ProductMapper
 {
-    public static Product ToEntity(this ProductDTO dto)
-    {
-        return new Product
-        {
-            Id = dto.Id,
-            Name = dto.Name,
-            Quantity = dto.Quantity,
-            Price = dto.Price,
-            CreatedAt = dto.CreatedAt ?? DateTime.UtcNow,
-            UpdatedAt = dto.UpdatedAt ?? DateTime.UtcNow,
-        };
-    }
-
     public static ProductDTO ToDto(this Product product)
     {
         return new ProductDTO(

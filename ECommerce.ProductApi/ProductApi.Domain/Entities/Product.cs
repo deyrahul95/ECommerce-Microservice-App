@@ -14,10 +14,12 @@ public class Product
     public string Name { get; set; } = string.Empty;
 
     [Required]
+    [Range(DBConstraint.PRODUCT_MIN_QUANTITY, DBConstraint.PRODUCT_MAX_QUANTITY)]
     public int Quantity { get; set; }
 
     [Required]
     [Column(TypeName = "decimal(18,2)")]
+    [Range((double)DBConstraint.PRODUCT_MIN_PRICE, (double)DBConstraint.PRODUCT_MAX_PRICE)]
     public decimal Price { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
