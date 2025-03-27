@@ -10,4 +10,9 @@
     <ProjectReference Include="../OrderApi.Infrastructure/OrderApi.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Polly" Version="8.5.2" />
+    <PackageReference Include="Polly.Extensions" Version="8.5.2" />
+  </ItemGroup>
+
 </Project>
