@@ -61,18 +61,7 @@ public class OrderService(
                 return OrderResults<OrderDetailsDTO>.USER_NOT_FOUND(order.ClientId);
             }
 
-            var orderDetails = new OrderDetailsDTO(
-                OrderId: orderId,
-                ProductId: productDto.Id,
-                ClientId: userDto.Id,
-                Email: userDto.Email,
-                PhoneNumber: userDto.PhoneNumber,
-                ProductName: productDto.Name,
-                PurchasedQuantity: order.PurchasedQuantity,
-                UnitPrice: productDto.Price,
-                TotalPrice: order.PurchasedQuantity * productDto.Price,
-                OrderedDate: order.OrderedDate
-            );
+            var orderDetails = order.ToDto(product: productDto, user: userDto);
 
             return OrderResults<OrderDetailsDTO>.ORDER_FETCHED(orderDetails);
         }

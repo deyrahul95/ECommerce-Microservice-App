@@ -5,5 +5,6 @@ public record UserDTO(
     string Name,
     string PhoneNumber,
     string Email,
+    string Address,
     string Role
 );

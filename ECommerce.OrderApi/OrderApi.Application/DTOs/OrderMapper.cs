@@ -26,4 +26,24 @@ public static class OrderMapper
         var dtoList = orders.Select(o => o.ToDto()).ToList();
         return dtoList;
     }
+
+    public static OrderDetailsDTO ToDto(this Order order, ProductDTO product, UserDTO user)
+    {
+        var totalPrice = order.PurchasedQuantity * product.Price;
+
+        return new OrderDetailsDTO(
+            OrderId: order.Id,
+            ProductId: product.Id,
+            ClientId: user.Id,
+            Name: user.Name,
+            Email: user.Email,
+            Address: user.Address,
+            PhoneNumber: user.PhoneNumber,
+            ProductName: product.Name,
+            PurchasedQuantity: order.PurchasedQuantity,
+            UnitPrice: product.Price,
+            TotalPrice: totalPrice,
+            OrderedDate: order.OrderedDate
+        );
+    }
 }
