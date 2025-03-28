@@ -14,6 +14,10 @@ public static class OrderResults<T> where T : class
         HttpStatusCode.NotFound,
         $"No order found with Id: {id}");
 
+    public static ServiceResult<T> CLIENT_ORDER_NOT_FOUND(Guid id) => new(
+        HttpStatusCode.NotFound,
+        $"No order found for user with Id: {id}");
+
     public static ServiceResult<T> PRODUCT_NOT_FOUND(Guid id) => new(
         HttpStatusCode.NotFound,
         $"No product found with Id: {id}");

@@ -17,8 +17,15 @@ public class OrderService(
     {
         try
         {
-            await Task.CompletedTask;
-            throw new NotImplementedException();
+            var orders = await orderRepository.GetClientOrders(clientId, token);
+
+            if (orders.Count == 0)
+            {
+                return OrderResults<List<OrderDTO>>.CLIENT_ORDER_NOT_FOUND(clientId);
+            }
+
+            var orderDtoList = orders.ToDtoList();
+            return OrderResults<List<OrderDTO>>.ORDER_FETCHED(orderDtoList);
         }
         catch (Exception ex)
         {
