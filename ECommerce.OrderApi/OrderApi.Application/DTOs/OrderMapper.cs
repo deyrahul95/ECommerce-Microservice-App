@@ -1,3 +1,4 @@
+using OrderApi.Application.Models;
 using OrderApi.Domain.Entities;
 
 namespace OrderApi.Application.DTOs;
@@ -45,5 +46,18 @@ public static class OrderMapper
             TotalPrice: totalPrice,
             OrderedDate: order.OrderedDate
         );
+    }
+
+    public static Order ToEntity(this CreateOrderRequest request)
+    {
+        return new Order
+        {
+            Id = Guid.NewGuid(),
+            ProductId = request.ProductId,
+            ClientId = request.ClientId,
+            PurchasedQuantity = request.PurchasedQuantity,
+            OrderedDate = DateTime.UtcNow,
+            LastUpdated = DateTime.UtcNow,
+        };
     }
 }

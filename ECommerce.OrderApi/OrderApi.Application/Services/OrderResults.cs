@@ -30,4 +30,9 @@ public static class OrderResults<T> where T : class
         HttpStatusCode.OK,
         data is IList ? "Orders fetched successfully" : "Order fetched successfully",
         data);
+
+     public static ServiceResult<T> ORDER_CREATED(T data) => new(
+        HttpStatusCode.Created,
+        "Order created successfully",
+        data);
 }
