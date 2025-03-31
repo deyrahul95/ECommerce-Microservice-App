@@ -21,8 +21,8 @@ public class OrderDbContext(DbContextOptions<OrderDbContext> options) : DbContex
             entity.ToTable(
                 "Orders",
                 t => t.HasCheckConstraint(
-                    "CK_Order_OrderDate",
-                    "OrderDate = CAST(GETDATE() AS DATE)"));
+                    "CK_Order_OrderedDate",
+                    "DATE(OrderedDate) = DATE('now', 'utc')"));
         });
     }
 }
