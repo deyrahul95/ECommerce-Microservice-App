@@ -16,10 +16,12 @@ public static class Extensions
         var baseAddress = configuration.GetSection("ApiGateway:BaseAddress").Value;
 
         // Register http client service
-        services.AddHttpClient<IHttpService, HttpService>(option =>
+        services.AddHttpClient(HttpService.HTTP_CLIENT_NAME, client =>
         {
-            option.BaseAddress = new Uri(baseAddress!);
-            option.Timeout = TimeSpan.FromSeconds(1);
+            client.BaseAddress = new Uri(baseAddress!);
+            client.Timeout = TimeSpan.FromSeconds(1);
+
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
         });
 
         var loggerService = services.BuildServiceProvider().GetRequiredService<ILoggerService>();
@@ -46,7 +48,7 @@ public static class Extensions
         });
 
         services.AddScoped<RetryHelper>();
-
+        services.AddScoped<IHttpService, HttpService>();
         services.AddScoped<IOrderService, OrderService>();
 
         return services;

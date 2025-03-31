@@ -8,15 +8,17 @@ using OrderApi.Application.Services.Interfaces;
 namespace OrderApi.Application.Services;
 
 public class HttpService(
-    HttpClient httpClient,
+    IHttpClientFactory httpClientFactory,
     ILoggerService logger) : IHttpService
 {
+    public const string HTTP_CLIENT_NAME = "OrderServiceClient";
+
+    private readonly HttpClient _httpClient = httpClientFactory.CreateClient(HTTP_CLIENT_NAME);
+
     public async Task<ProductDTO?> GetProduct(Guid productId, CancellationToken token = default)
     {
-        var uri = new Uri($"/api/products/{productId}");
-
-        logger.LogInformation($"Fetching product data. Id: {productId}, Uri: {uri}");
-        var response = await httpClient.GetAsync(uri, token);
+        logger.LogInformation($"Fetching product data. Id: {productId}");
+        var response = await _httpClient.GetAsync($"api/products/{productId}", token);
 
         if (response.IsSuccessStatusCode == false)
         {
@@ -35,17 +37,15 @@ public class HttpService(
         }
 
         logger.LogInformation(
-            $"Product fetched completed. Id: {productId}, Uri: {uri}, StatusCode: {result.StatusCode}, Message: {result.Message}"
+            $"Product fetched completed. Id: {productId}, StatusCode: {result.StatusCode}, Message: {result.Message}"
         );
         return result.Data;
     }
 
     public async Task<UserDTO?> GetUser(Guid userId, CancellationToken token = default)
     {
-        var uri = new Uri($"/api/users/{userId}");
-
-        logger.LogInformation($"Fetching user data. Id: {userId}, Uri: {uri}");
-        var response = await httpClient.GetAsync(uri, token);
+        logger.LogInformation($"Fetching user data. Id: {userId}");
+        var response = await _httpClient.GetAsync($"api/users/{userId}", token);
 
         if (response.IsSuccessStatusCode == false)
         {
@@ -64,7 +64,7 @@ public class HttpService(
         }
 
         logger.LogInformation(
-            $"User fetched completed. Id: {userId}, Uri: {uri}, StatusCode: {result.StatusCode}, Message: {result.Message}"
+            $"User fetched completed. Id: {userId}, StatusCode: {result.StatusCode}, Message: {result.Message}"
         );
         return result.Data;
     }

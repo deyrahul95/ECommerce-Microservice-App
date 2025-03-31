@@ -18,6 +18,24 @@ public class OrderService(
     {
         try
         {
+            var productDto = await retryHelper.ExecuteAsync(
+                () => httpService.GetProduct(request.ProductId, token), 
+                token);
+
+            if (productDto is null)
+            {
+                return OrderResults<OrderDTO>.PRODUCT_NOT_FOUND(request.ProductId);
+            }
+
+            var userDto = await retryHelper.ExecuteAsync(
+                () => httpService.GetUser(request.ClientId,token), 
+                token);
+
+            if (userDto is null)
+            {
+                return OrderResults<OrderDTO>.USER_NOT_FOUND(request.ClientId);
+            }
+
             var newOrder = await orderRepository.CreateAsync(request.ToEntity(), token);
 
             if (newOrder == null || Guid.Empty == newOrder.Id)
@@ -111,7 +129,7 @@ public class OrderService(
 
             if (productDto is null)
             {
-                return OrderResults<OrderDetailsDTO>.ORDER_NOT_FOUND(order.ProductId);
+                return OrderResults<OrderDetailsDTO>.PRODUCT_NOT_FOUND(order.ProductId);
             }
 
             var userDto = await retryHelper.ExecuteAsync(

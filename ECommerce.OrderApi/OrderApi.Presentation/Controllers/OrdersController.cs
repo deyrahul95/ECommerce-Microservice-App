@@ -51,6 +51,11 @@ public class OrdersController(IOrderService orderService) : ControllerBase
 
         var response = await orderService.CreateOrder(request, token);
 
+        if (response.StatusCode == HttpStatusCode.NotFound)
+        {
+            return NotFound(response);
+        }
+
         if (response.StatusCode == HttpStatusCode.Created)
         {
             var url = Url.Action("Get", "Orders", new { id = response.Data?.Id }, Request.Scheme);
