@@ -1,17 +1,17 @@
 using ECommerce.Shared.Models;
 using ECommerce.Shared.Services.Interfaces;
 using OrderApi.Application.DTOs;
+using OrderApi.Application.Helpers;
 using OrderApi.Application.Models;
 using OrderApi.Application.Services.Interfaces;
 using OrderApi.Infrastructure.Repositories.Interfaces;
-using Polly.Registry;
 
 namespace OrderApi.Application.Services;
 
 public class OrderService(
     IOrderRepository orderRepository,
     IHttpService httpService,
-    ResiliencePipelineProvider<string> pipelineProvider,
+    RetryHelper retryHelper,
     ILoggerService logger) : IOrderService
 {
     public async Task<ServiceResult<OrderDTO>> CreateOrder(CreateOrderRequest request, CancellationToken token = default)
@@ -105,23 +105,18 @@ public class OrderService(
                 return OrderResults<OrderDetailsDTO>.ORDER_NOT_FOUND(orderId);
             }
 
-            // Get retry pipeline
-            var retryPipeline = pipelineProvider.GetPipeline("order-retry-pipeline");
-
-            var productDto = await retryPipeline.ExecuteAsync(
-                async _token => await httpService.GetProduct(
-                    order.ProductId,
-                    _token), token);
+            var productDto = await retryHelper.ExecuteAsync(
+                () => httpService.GetProduct(order.ProductId, token), 
+                token);
 
             if (productDto is null)
             {
                 return OrderResults<OrderDetailsDTO>.ORDER_NOT_FOUND(order.ProductId);
             }
 
-            var userDto = await retryPipeline.ExecuteAsync(
-                async _token => await httpService.GetUser(
-                    order.ClientId,
-                    _token), token);
+            var userDto = await retryHelper.ExecuteAsync(
+                () => httpService.GetUser(order.ClientId,token), 
+                token);
 
             if (userDto is null)
             {

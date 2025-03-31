@@ -1,6 +1,7 @@
 using ECommerce.Shared.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OrderApi.Application.Helpers;
 using OrderApi.Application.Services;
 using OrderApi.Application.Services.Interfaces;
 using Polly;
@@ -39,10 +40,12 @@ public static class Extensions
             }
         };
 
-        services.AddResiliencePipeline("order-retry-pipeline", builder =>
+        services.AddResiliencePipeline(RetryHelper.RETRY_PIPELINE, builder =>
         {
             builder.AddRetry(retryStrategy);
         });
+
+        services.AddScoped<RetryHelper>();
 
         services.AddScoped<IOrderService, OrderService>();
 
