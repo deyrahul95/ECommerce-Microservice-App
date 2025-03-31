@@ -1,3 +1,4 @@
+using ProductApi.Application.Models;
 using ProductApi.Domain.Entities;
 
 namespace ProductApi.Application.DTOs;
@@ -25,5 +26,18 @@ public static class ProductMapper
 
         var dtoList = products.Select(p => p.ToDto()).ToList();
         return dtoList;
+    }
+
+    public static Product ToEntity(this CreateProductRequest request)
+    {
+        return new Product
+        {
+            Id = Guid.NewGuid(),
+            Name = request.Name,
+            Quantity = request.Quantity,
+            Price = request.Price,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
     }
 }

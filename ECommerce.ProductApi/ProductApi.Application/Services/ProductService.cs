@@ -3,7 +3,6 @@ using ECommerce.Shared.Services.Interfaces;
 using ProductApi.Application.DTOs;
 using ProductApi.Application.Models;
 using ProductApi.Application.Services.Interfaces;
-using ProductApi.Domain.Entities;
 using ProductApi.Infrastructure.Repositories.Interfaces;
 
 namespace ProductApi.Application.Services;
@@ -22,17 +21,7 @@ public class ProductService(IProductRepository productRepository, ILoggerService
                 return ProductResults<ProductDTO>.PRODUCT_NAME_CONFLICT(request.Name);
             }
 
-            var product = new Product
-            {
-                Id = Guid.NewGuid(),
-                Name = request.Name,
-                Quantity = request.Quantity,
-                Price = request.Price,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
-
-            var newProduct = await productRepository.CreateAsync(product, token);
+            var newProduct = await productRepository.CreateAsync(request.ToEntity(), token);
 
             if (newProduct == null || string.IsNullOrEmpty(newProduct.Name))
             {
@@ -67,22 +56,22 @@ public class ProductService(IProductRepository productRepository, ILoggerService
         }
     }
 
-    public async Task<ServiceResult<ProductDTO>> GetProduct(Guid Id, CancellationToken token = default)
+    public async Task<ServiceResult<ProductDTO>> GetProduct(Guid id, CancellationToken token = default)
     {
         try
         {
-            var product = await productRepository.FindByIdAsync(Id, token);
+            var product = await productRepository.FindByIdAsync(id, token);
 
             if (product is null)
             {
-                return ProductResults<ProductDTO>.PRODUCT_NOT_FOUND(Id);
+                return ProductResults<ProductDTO>.PRODUCT_NOT_FOUND(id);
             }
 
             return ProductResults<ProductDTO>.PRODUCT_FETCHED(product.ToDto());
         }
         catch (Exception ex)
         {
-            logger.LogError($"Failed to fetched Product. Id: {Id}", ex);
+            logger.LogError($"Failed to fetched Product. Id: {id}", ex);
             return ProductResults<ProductDTO>.INTERNAL_SERVICE_FAILURE;
         }
     }

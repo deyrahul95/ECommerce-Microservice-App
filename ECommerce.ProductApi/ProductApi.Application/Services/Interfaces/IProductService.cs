@@ -7,6 +7,6 @@ namespace ProductApi.Application.Services.Interfaces;
 public interface IProductService
 {
     public Task<ServiceResult<ProductDTO>> CreateProduct(CreateProductRequest request, CancellationToken token = default);
-    public Task<ServiceResult<ProductDTO>> GetProduct(Guid Id, CancellationToken token = default);
+    public Task<ServiceResult<ProductDTO>> GetProduct(Guid id, CancellationToken token = default);
     public Task<ServiceResult<List<ProductDTO>>> GetAllProducts(CancellationToken token = default);
 }
