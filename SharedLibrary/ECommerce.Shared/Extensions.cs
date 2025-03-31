@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 
 namespace ECommerce.Shared;
 
@@ -16,6 +18,12 @@ public static class Extensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.AddLogging(builder =>
+        {
+            builder.ClearProviders();
+            builder.AddSerilog();
+        });
+        
         services.AddJWTAuthenticationScheme(configuration);
 
         services.AddTransient<ILoggerService, LoggerService>();

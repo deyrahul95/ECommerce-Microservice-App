@@ -11,7 +11,7 @@ public class LoggerService : ILoggerService
         var fileName = configuration.GetSection("Log:FileName").Value ?? "log";
 
         Log.Logger = new LoggerConfiguration()
-           .MinimumLevel.Debug()
+           .MinimumLevel.Information()
            .WriteTo.Console()
            .WriteTo.File($"logs/{fileName}-.txt", rollingInterval: RollingInterval.Day)
            .CreateLogger();
