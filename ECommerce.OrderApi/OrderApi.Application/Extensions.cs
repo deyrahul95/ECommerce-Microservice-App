@@ -10,10 +10,7 @@ namespace OrderApi.Application;
 
 public static class Extensions
 {
-    public static IServiceCollection AddApplicationService(
-        this IServiceCollection services,
-        IConfiguration configuration,
-        ILoggerService logger)
+    public static IServiceCollection AddApplicationService(this IServiceCollection services, IConfiguration configuration)
     {
         var baseAddress = configuration.GetSection("ApiGateway:BaseAddress").Value;
 
@@ -23,6 +20,8 @@ public static class Extensions
             option.BaseAddress = new Uri(baseAddress!);
             option.Timeout = TimeSpan.FromSeconds(1);
         });
+
+        var loggerService = services.BuildServiceProvider().GetRequiredService<ILoggerService>();
 
         // Create retry strategy
         var retryStrategy = new RetryStrategyOptions()
@@ -35,7 +34,7 @@ public static class Extensions
             OnRetry = args =>
             {
                 var message = $"OnRetry, Attempt: {args.AttemptNumber} Outcome: {args.Outcome}";
-                logger.LogError(message);
+                loggerService.LogError(message);
                 return ValueTask.CompletedTask;
             }
         };
