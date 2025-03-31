@@ -1,3 +1,4 @@
+using System.Net.Sockets;
 using ECommerce.Shared.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +30,10 @@ public static class Extensions
         // Create retry strategy
         var retryStrategy = new RetryStrategyOptions()
         {
-            ShouldHandle = new PredicateBuilder().Handle<TaskCanceledException>(),
+            ShouldHandle = new PredicateBuilder()
+                .Handle<HttpRequestException>()
+                .Handle<SocketException>()  
+                .Handle<TaskCanceledException>(),
             BackoffType = DelayBackoffType.Constant,
             UseJitter = true,
             MaxRetryAttempts = 3,
@@ -37,7 +41,7 @@ public static class Extensions
             OnRetry = args =>
             {
                 var message = $"OnRetry, Attempt: {args.AttemptNumber} Outcome: {args.Outcome}";
-                loggerService.LogError(message);
+                loggerService.LogWarning(message);
                 return ValueTask.CompletedTask;
             }
         };
