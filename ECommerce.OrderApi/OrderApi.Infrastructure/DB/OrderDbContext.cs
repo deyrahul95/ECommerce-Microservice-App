@@ -18,11 +18,11 @@ public class OrderDbContext(DbContextOptions<OrderDbContext> options) : DbContex
                     "CK_Order_PurchasedQuantity",
                     $"[PurchasedQuantity] >= {DBConstraint.PURCHASE_ORDER_MIN_QUANTITY} AND [PurchasedQuantity] <= {DBConstraint.PURCHASE_ORDER_MAX_QUANTITY}"));
 
-            entity.ToTable(
-                "Orders",
-                t => t.HasCheckConstraint(
-                    "CK_Order_OrderedDate",
-                    "DATE(OrderedDate) = DATE('now', 'utc')"));
+            // entity.ToTable(
+            //     "Orders",
+            //     t => t.HasCheckConstraint(
+            //         "CK_Order_OrderedDate",
+            //         "DATE(OrderedDate) = DATE('now', 'utc')"));
         });
     }
 }
