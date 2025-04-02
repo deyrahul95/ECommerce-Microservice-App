@@ -46,7 +46,7 @@ public class UserService(IUserRepository userRepository, ILoggerService logger) 
         }
     }
 
-    public async Task<ServiceResult<AppUserDTO>> MarkedAsAdmin(Guid id, CancellationToken token = default)
+    public async Task<ServiceResult<AppUserDTO>> MakeAdmin(Guid id, CancellationToken token = default)
     {
         try
         {
