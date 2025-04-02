@@ -15,7 +15,7 @@ public static class Extensions
     {
         services.Configure<Authentication>(configuration.GetSection("Authentication"));
 
-         // Add database context
+        // Add database context
         var sqliteConnection = configuration.GetConnectionString("SqliteConnection");
         services.AddDbContext<UserDbContext>(options => options.UseSqlite(sqliteConnection));
 
@@ -31,7 +31,14 @@ public static class Extensions
     public static IApplicationBuilder UseApiPolicy(this IApplicationBuilder app)
     {
         app.UseSharedPolicies();
-        
+
+        using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()?.CreateScope())
+        {
+            var context = serviceScope?.ServiceProvider.GetRequiredService<UserDbContext>();
+            context?.Database.Migrate();
+            DataSeeder.SeedData(context!);
+        }
+
         return app;
     }
 }

@@ -10,6 +10,7 @@ namespace AuthApi.Users.Controllers;
 public class UsersController(IUserService userService) : ControllerBase
 {
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAll(CancellationToken token = default)
     {
         var response = await userService.GetAllUsers(token);
@@ -24,6 +25,7 @@ public class UsersController(IUserService userService) : ControllerBase
 
     [HttpGet]
     [Route("{id:Guid}")]
+    [Authorize]
     public async Task<IActionResult> Get([FromRoute] Guid id, CancellationToken token = default)
     {
         var response = await userService.GetUser(id, token);
@@ -43,6 +45,7 @@ public class UsersController(IUserService userService) : ControllerBase
 
     [HttpGet]
     [Route("{id:Guid}/make-admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> MakeAdmin([FromRoute] Guid id, CancellationToken token = default)
     {
         var response = await userService.MakeAdmin(id, token);

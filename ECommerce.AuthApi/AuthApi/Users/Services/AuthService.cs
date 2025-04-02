@@ -30,6 +30,7 @@ public class AuthService(
 
             if (user is null)
             {
+                logger.LogWarning($"Requested User not found. Email ID: {request.Email}");
                 return AuthResults.INVALID_CREDENTIAL;
             }
 
@@ -37,6 +38,7 @@ public class AuthService(
 
             if (isValidPassword is false)
             {
+                logger.LogWarning($"Requested User password is not valid. Email ID: {request.Email}");
                 return AuthResults.INVALID_CREDENTIAL;
             }
 
@@ -59,6 +61,7 @@ public class AuthService(
 
             if (existingUser is not null)
             {
+                logger.LogWarning($"Requested User already exists. Email ID: {request.Email}");
                 return AuthResults.USER_EMAIL_CONFLICT(request.Email);
             }
 
