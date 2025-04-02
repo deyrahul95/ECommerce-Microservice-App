@@ -18,6 +18,17 @@ public static class AppUserMapper
         );
     }
 
+    public static List<AppUserDTO> ToDtoList(this IEnumerable<AppUser> users)
+    {
+        if(users is null || users.Any() == false)
+        {
+            return [];
+        }
+
+        var dtoList = users.Select(u => u.ToDto()).ToList();
+        return dtoList;
+    }
+
     public static AppUser ToEntity(this RegisterRequest request)
     {
         return new AppUser { 

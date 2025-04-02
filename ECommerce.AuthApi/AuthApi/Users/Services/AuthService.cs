@@ -46,7 +46,7 @@ public class AuthService(
         }
         catch (Exception ex)
         {
-            logger.LogError("Failed to register user", ex);
+            logger.LogError($"Failed to logged in user. Email: {request.Email}", ex);
             return AuthResults.INTERNAL_SERVICE_FAILURE;
         }
     }
@@ -76,7 +76,7 @@ public class AuthService(
         }
         catch (Exception ex)
         {
-            logger.LogError("Failed to register user", ex);
+            logger.LogError($"Failed to register user. Name: {request.Name}, Email: {request.Email}", ex);
             return AuthResults.INTERNAL_SERVICE_FAILURE;
         }
     }
