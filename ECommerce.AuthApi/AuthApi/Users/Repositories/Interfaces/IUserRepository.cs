@@ -5,5 +5,5 @@ namespace AuthApi.Users.Repositories.Interfaces;
 
 public interface IUserRepository : IBaseRepository<AppUser>
 {
-    
+    public Task<AppUser?> GetUserByEmail(string email, CancellationToken token = default);
 }

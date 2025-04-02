@@ -1,4 +1,6 @@
 using AuthApi.Users.Entities;
+using AuthApi.Users.Enums;
+using AuthApi.Users.Models;
 
 namespace AuthApi.Users.DTOs;
 
@@ -14,5 +16,20 @@ public static class AppUserMapper
             Address: user.Address ?? "N/A",
             Role: user.Role ?? "N/A"
         );
+    }
+
+    public static AppUser ToEntity(this RegisterRequest request)
+    {
+        return new AppUser { 
+            Id = Guid.NewGuid(),
+            Name = request.Name,
+            PhoneNumber = request.PhoneNumber,
+            Email = request.Email,
+            Password = request.Password,
+            Address = request.Address,
+            Role = AppUserRole.User.ToString(),
+            DateRegistered = DateTime.UtcNow,
+            LastUpdated = DateTime.UtcNow
+        };
     }
 }
