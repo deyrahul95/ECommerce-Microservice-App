@@ -1,4 +1,4 @@
-namespace AuthApi.Users.Entities;
+namespace AuthApi.Users.Configs;
 
 public static class DBConstraints
 {

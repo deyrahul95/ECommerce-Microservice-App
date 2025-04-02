@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AuthApi.Users.Configs;
 using AuthApi.Users.DTOs;
 using AuthApi.Users.Entities;
 using AuthApi.Users.Enums;
@@ -9,15 +10,18 @@ using AuthApi.Users.Repositories.Interfaces;
 using AuthApi.Users.Services.Interfaces;
 using ECommerce.Shared.Models;
 using ECommerce.Shared.Services.Interfaces;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AuthApi.Users.Services;
 
 public class AuthService(
     IUserRepository userRepository,
-    IConfiguration configuration,
+    IOptions<Authentication> authOptions,
     ILoggerService logger) : IAuthService
 {
+    private readonly Authentication authConfig = authOptions.Value;
+
     public async Task<ServiceResult<string>> Login(LoginRequest request, CancellationToken token = default)
     {
         try
@@ -79,8 +83,8 @@ public class AuthService(
 
     private string GenerateJWTToken(AppUser user)
     {
-        var key = configuration.GetSection("Authentication:Key").Value;
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!));
+        var key = Encoding.UTF8.GetBytes(authConfig.Key);
+        var securityKey = new SymmetricSecurityKey(key);
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var claims = new List<Claim> {
@@ -90,8 +94,8 @@ public class AuthService(
         };
 
         var token = new JwtSecurityToken(
-            issuer: configuration.GetSection("Authentication:Issuer").Value,
-            audience: configuration.GetSection("Authentication.Audience").Value,
+            issuer: authConfig.Issuer,
+            audience: authConfig.Audience,
             claims: claims,
             expires: DateTime.UtcNow.AddHours(2),
             signingCredentials: credentials);

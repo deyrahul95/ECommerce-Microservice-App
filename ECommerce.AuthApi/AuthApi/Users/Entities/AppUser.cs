@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using AuthApi.Users.Configs;
 
 namespace AuthApi.Users.Entities;
 
