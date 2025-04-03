@@ -15,6 +15,7 @@ public class AuthController(IAuthService authService, ILoggerService logger) : C
 {
     [HttpPost]
     [Route("register")]
+    [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request, CancellationToken token = default)
     {
         if (ModelState.IsValid is false)
@@ -39,6 +40,7 @@ public class AuthController(IAuthService authService, ILoggerService logger) : C
 
     [HttpPost]
     [Route("login")]
+    [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken token = default)
     {
         if (ModelState.IsValid is false)

@@ -1,4 +1,6 @@
 using System.Net;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrderApi.Application.Models;
 using OrderApi.Application.Services.Interfaces;
@@ -7,9 +9,11 @@ namespace OrderApi.Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class OrdersController(IOrderService orderService) : ControllerBase
 {
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAll(CancellationToken token = default)
     {
         var response = await orderService.GetAllOrders(token);

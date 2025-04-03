@@ -9,6 +9,7 @@ namespace AuthApi.Users.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class UsersController(IUserService userService) : ControllerBase
 {
     [HttpGet]
@@ -27,7 +28,6 @@ public class UsersController(IUserService userService) : ControllerBase
 
     [HttpGet]
     [Route("{id:Guid}")]
-    [Authorize]
     public async Task<IActionResult> Get([FromRoute] Guid id, CancellationToken token = default)
     {
         if (HasAdminRole() == false && IsSameUserId(id) == false)

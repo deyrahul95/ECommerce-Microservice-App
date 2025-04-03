@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductApi.Application.Models;
 using ProductApi.Application.Services.Interfaces;
@@ -7,6 +8,7 @@ namespace ProductApi.Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class ProductsController(IProductService productService) : ControllerBase
 {
     [HttpGet]
@@ -42,6 +44,7 @@ public class ProductsController(IProductService productService) : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Create([FromBody] CreateProductRequest request, CancellationToken token = default)
     {
         if (ModelState.IsValid == false)
