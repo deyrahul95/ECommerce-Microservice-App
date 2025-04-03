@@ -1,6 +1,8 @@
+using ApiGateway.Middlewares;
 using ECommerce.Shared;
 using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,8 +29,13 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseCors();
 app.UseHttpsRedirection();
+
+app.UseCors();
+
+app.UseMiddleware<AddSignatureToRequest>();
+
+app.UseOcelot().Wait();
 
 app.Run();
 
