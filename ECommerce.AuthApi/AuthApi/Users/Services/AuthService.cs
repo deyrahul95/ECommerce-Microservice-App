@@ -94,6 +94,7 @@ public class AuthService(
             new (ClaimTypes.Name, user.Name),
             new (ClaimTypes.Email, user.Email),
             new (ClaimTypes.Role, user.Role ?? AppUserRole.Guest.ToString()),
+            new ("Id", user.Id.ToString()),
         };
 
         var expiresIn = DateTime.UtcNow.AddHours(2);

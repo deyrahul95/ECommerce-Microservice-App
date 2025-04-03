@@ -11,36 +11,10 @@ public class GlobalExceptionHandler(RequestDelegate next, ILoggerService logger)
         try
         {
             await next(context);
-            await CheckResponses(context);
         }
         catch (Exception ex)
         {
             await HandleExceptionAsync(context, ex);
-        }
-    }
-
-    private static async Task CheckResponses(HttpContext context)
-    {
-        switch (context.Response.StatusCode)
-        {
-            case StatusCodes.Status429TooManyRequests:
-                await ModifyResponseHeader(context, "Too many requests made. Please try after some times.");
-                break;
-
-            case StatusCodes.Status401Unauthorized:
-                await ModifyResponseHeader(context, "You are not authorized to access this content.");
-                break;
-
-            case StatusCodes.Status403Forbidden:
-                await ModifyResponseHeader(context, "You don't have required access.");
-                break;
-
-            case StatusCodes.Status503ServiceUnavailable:
-                await ModifyResponseHeader(context, "Sorry, service is unavailable!");
-                break;
-
-            default:
-                return;
         }
     }
 
