@@ -22,7 +22,7 @@ public class AuthService(
 {
     private readonly Authentication authConfig = authOptions.Value;
 
-    public async Task<ServiceResult<string>> Login(LoginRequest request, CancellationToken token = default)
+    public async Task<ServiceResult<JWTTokenDTO>> Login(LoginRequest request, CancellationToken token = default)
     {
         try
         {
@@ -84,7 +84,7 @@ public class AuthService(
         }
     }
 
-    private string GenerateJWTToken(AppUser user)
+    private JWTTokenDTO GenerateJWTToken(AppUser user)
     {
         var key = Encoding.UTF8.GetBytes(authConfig.Key);
         var securityKey = new SymmetricSecurityKey(key);
@@ -96,14 +96,17 @@ public class AuthService(
             new (ClaimTypes.Role, user.Role ?? AppUserRole.Guest.ToString()),
         };
 
+        var expiresIn = DateTime.UtcNow.AddHours(2);
+
         var token = new JwtSecurityToken(
             issuer: authConfig.Issuer,
             audience: authConfig.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(2),
+            expires: expiresIn,
             signingCredentials: credentials);
+        
+        var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        return new JWTTokenDTO(jwtToken, expiresIn);
     }
-
 }
