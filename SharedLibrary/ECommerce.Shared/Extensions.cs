@@ -34,7 +34,7 @@ public static class Extensions
         return app;
     }
 
-    private static IServiceCollection AddJWTAuthenticationScheme(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddJWTAuthenticationScheme(this IServiceCollection services, IConfiguration configuration)
     {
         // Add jwt authentication scheme
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

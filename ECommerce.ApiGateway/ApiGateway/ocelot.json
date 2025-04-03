@@ -1,0 +1,80 @@
+{
+    "Routes": [
+        {
+            "DownstreamPathTemplate": "/api/auth/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5000
+                }
+            ],
+            "UpstreamPathTemplate": "/api/auth/{everything}",
+            "UpstreamHttpMethod": [
+                "GET",
+                "POST"
+            ],
+            "RateLimitOptions": {
+                "ClientWhitelist": [],
+                "EnableRateLimiting": true,
+                "Period": "60s",
+                "Limit": 1,
+                "PeriodTimespan": 10
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/api/products/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "UpstreamPathTemplate": "/api/products/{everything}",
+            "UpstreamHttpMethod": [
+                "GET",
+                "POST"
+            ],
+            "FileCacheOptions": {
+                "TtlSeconds": 60,
+                "Region": "default",
+                "Header": "ECommerce-Caching-Control"
+            },
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/api/orders/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5002
+                }
+            ],
+            "UpstreamPathTemplate": "/api/orders/{everything}",
+            "UpstreamHttpMethod": [
+                "GET",
+                "POST"
+            ],
+            "FileCacheOptions": {
+                "TtlSeconds": 60,
+                "Region": "default",
+                "Header": "ECommerce-Caching-Control"
+            },
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            }
+        }
+    ],
+    "GlobalConfiguration": {
+        "BaseUrl": "https://localhost:7026",
+        "RateLimitOptions": {
+            "QuotaExceededMessage": "Oops! You have done too many requests. Please relax and try again after sometimes"
+        }
+    }
+}
