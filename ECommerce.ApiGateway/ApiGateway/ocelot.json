@@ -5,8 +5,8 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "localhost",
-                    "Port": 5000
+                    "Host": "auth-service",
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/api/auth/{everything}",
@@ -27,8 +27,8 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "localhost",
-                    "Port": 5001
+                    "Host": "product-service",
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/api/products/{everything}",
@@ -51,8 +51,8 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "localhost",
-                    "Port": 5002
+                    "Host": "order-service",
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/api/orders/{everything}",
@@ -72,7 +72,7 @@
         }
     ],
     "GlobalConfiguration": {
-        "BaseUrl": "https://localhost:7026",
+        "BaseUrl": "http://localhost:8080",
         "RateLimitOptions": {
             "QuotaExceededMessage": "Oops! You have done too many requests. Please relax and try again after sometimes"
         }
