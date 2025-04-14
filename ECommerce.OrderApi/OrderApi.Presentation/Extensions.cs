@@ -27,6 +27,12 @@ public static class Extensions
     {
         app.UseSharedPolicies();
 
+        using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()?.CreateScope())
+        {
+            var context = serviceScope?.ServiceProvider.GetRequiredService<OrderDbContext>();
+            context?.Database.Migrate();
+        }
+
         return app;
     }
 }
