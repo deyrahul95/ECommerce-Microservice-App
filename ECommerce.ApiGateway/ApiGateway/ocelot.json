@@ -18,7 +18,32 @@
                 "ClientWhitelist": [],
                 "EnableRateLimiting": true,
                 "Period": "60s",
-                "Limit": 1,
+                "Limit": 5,
+                "PeriodTimespan": 10
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/api/users/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "auth-service",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/api/users/{everything}",
+            "UpstreamHttpMethod": [
+                "GET"
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            },
+            "RateLimitOptions": {
+                "ClientWhitelist": [],
+                "EnableRateLimiting": true,
+                "Period": "60s",
+                "Limit": 5,
                 "PeriodTimespan": 10
             }
         },
@@ -44,6 +69,13 @@
             "AuthenticationOptions": {
                 "AuthenticationProviderKey": "Bearer",
                 "AllowedScopes": []
+            },
+            "RateLimitOptions": {
+                "ClientWhitelist": [],
+                "EnableRateLimiting": true,
+                "Period": "60s",
+                "Limit": 5,
+                "PeriodTimespan": 10
             }
         },
         {
@@ -68,6 +100,13 @@
             "AuthenticationOptions": {
                 "AuthenticationProviderKey": "Bearer",
                 "AllowedScopes": []
+            },
+            "RateLimitOptions": {
+                "ClientWhitelist": [],
+                "EnableRateLimiting": true,
+                "Period": "60s",
+                "Limit": 5,
+                "PeriodTimespan": 10
             }
         }
     ],

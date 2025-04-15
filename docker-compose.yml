@@ -19,8 +19,6 @@ services:
       context: .
       dockerfile: AuthApi.Dockerfile
     image: "microservice/auth-service:latest"
-    # ports:
-    #   - "8080:5000"
     networks:
       - app_network
 
@@ -29,8 +27,6 @@ services:
       context: .
       dockerfile: OrderApi.Dockerfile  
     image: "microservice/order-service:latest"
-    # ports:
-    #   - "8080:5002"
     networks:
       - app_network
 
@@ -39,8 +35,6 @@ services:
       context: .
       dockerfile: ProductApi.Dockerfile
     image: "microservice/product-service:latest"
-    # ports:
-    #   - "8080:5001"
     networks:
       - app_network
 
