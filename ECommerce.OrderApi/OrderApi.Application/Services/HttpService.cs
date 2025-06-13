@@ -1,7 +1,9 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using ECommerce.Shared.Models;
 using ECommerce.Shared.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
 using OrderApi.Application.DTOs;
 using OrderApi.Application.Services.Interfaces;
 
@@ -9,6 +11,7 @@ namespace OrderApi.Application.Services;
 
 public class HttpService(
     IHttpClientFactory httpClientFactory,
+    IHttpContextAccessor httpContextAccessor,
     ILoggerService logger) : IHttpService
 {
     public const string HTTP_CLIENT_NAME = "OrderServiceClient";
@@ -18,7 +21,13 @@ public class HttpService(
     public async Task<ProductDTO?> GetProduct(Guid productId, CancellationToken token = default)
     {
         logger.LogInformation($"Fetching product data. Id: {productId}");
-        var response = await _httpClient.GetAsync($"api/products/{productId}", token);
+
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+            scheme: "Bearer",
+            parameter: httpContextAccessor?.HttpContext?.Request.Headers.Authorization);
+        var response = await _httpClient.GetAsync(
+            requestUri: $"api/products/{productId}",
+            cancellationToken: token);
 
         if (response.IsSuccessStatusCode == false)
         {
@@ -45,7 +54,13 @@ public class HttpService(
     public async Task<UserDTO?> GetUser(Guid userId, CancellationToken token = default)
     {
         logger.LogInformation($"Fetching user data. Id: {userId}");
-        var response = await _httpClient.GetAsync($"api/users/{userId}", token);
+
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+            scheme: "Bearer",
+            parameter: httpContextAccessor?.HttpContext?.Request.Headers.Authorization);
+        var response = await _httpClient.GetAsync(
+            requestUri: $"api/users/{userId}",
+            cancellationToken: token);
 
         if (response.IsSuccessStatusCode == false)
         {
