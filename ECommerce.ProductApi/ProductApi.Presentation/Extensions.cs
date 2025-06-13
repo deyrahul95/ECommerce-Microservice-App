@@ -30,6 +30,7 @@ public static class Extensions
         {
             var context = serviceScope?.ServiceProvider.GetRequiredService<ProductDbContext>();
             context?.Database.Migrate();
+            DataSeeder.SeedData(context!);
         }
 
         return app;
