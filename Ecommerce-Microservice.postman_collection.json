@@ -1,0 +1,452 @@
+{
+	"info": {
+		"_postman_id": "bfd47d6d-7e72-4ca1-8447-c835fa568771",
+		"name": "Ecommerce-Microservice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29469747"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Get All Products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"if (response.statusCode === 200){\r",
+									"\tpm.collectionVariables.set(\"productId\", response.data[0].id);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatway}}/api/products",
+							"host": [
+								"{{gatway}}"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"name\": \"Dell Ultra Slim Laptop\",\r\n\t\"quantity\": 15,\r\n\t\"price\": 95026.26\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gatway}}/api/products",
+							"host": [
+								"{{gatway}}"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product By ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"name\": \"Dell Ultra Slim Laptop\",\r\n\t\"quantity\": 15,\r\n\t\"price\": 95026.26\r\n}"
+						},
+						"url": {
+							"raw": "{{gatway}}/api/products/48f04e5e-a373-4c61-bc0a-2dbf5d9c8344",
+							"host": [
+								"{{gatway}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"48f04e5e-a373-4c61-bc0a-2dbf5d9c8344"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Get All Orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatway}}/api/orders",
+							"host": [
+								"{{gatway}}"
+							],
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"if (response.statusCode === 201){\r",
+									"\tpm.collectionVariables.set(\"orderId\", response.data.id);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"productId\": \"{{productId}}\",\r\n\t\"clientId\": \"{{userId}}\",\r\n\t\"purchasedQuantity\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gatway}}/api/orders",
+							"host": [
+								"{{gatway}}"
+							],
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatway}}/api/orders/{{orderId}}",
+							"host": [
+								"{{gatway}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"{{orderId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"name\": \"test user\",\r\n\t\"email\": \"test@test.com\",\r\n\t\"password\": \"Test1234\",\r\n\t\"phoneNumber\": \"1234567890\",\r\n\t\"address\": \"Test remains in localhost\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gatway}}/api/auth/register",
+							"host": [
+								"{{gatway}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json()\r",
+									"\r",
+									"if (response.statusCode === 200){\r",
+									"\tpm.collectionVariables.set(\"token\", response.data.token)\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"email\": \"admin@example.com\",\r\n\t\"password\": \"AdminPassword\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gatway}}/api/auth/login",
+							"host": [
+								"{{gatway}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"if (response.statusCode === 200){\r",
+									"\tpm.collectionVariables.set(\"userId\", response.data.userId);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatway}}/api/auth/verify",
+							"host": [
+								"{{gatway}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatway}}/api/users",
+							"host": [
+								"{{gatway}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatway}}/api/users/eecd6965-1317-4267-901b-2f9092b78f5f",
+							"host": [
+								"{{gatway}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"eecd6965-1317-4267-901b-2f9092b78f5f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Make Admin",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatway}}/api/users/eecd6965-1317-4267-901b-2f9092b78f5f/make-admin",
+							"host": [
+								"{{gatway}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"eecd6965-1317-4267-901b-2f9092b78f5f",
+								"make-admin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "gatway",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "userId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "productId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "orderId",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
