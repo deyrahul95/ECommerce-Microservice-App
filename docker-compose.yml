@@ -3,13 +3,15 @@ services:
     build:
       context: .
       dockerfile: ApiGateway.Dockerfile
-    image: "microservice/api-gateway:latest"
+    image: "e-commerce/api-gateway:latest"
+    container_name: "ECommerce.ApiGateway"
     ports:
       - "8080:8080"
     depends_on:
       - auth-service
       - order-service
       - product-service
+      - consul
     networks:
       - app_network
 
@@ -17,7 +19,10 @@ services:
     build:
       context: .
       dockerfile: AuthApi.Dockerfile
-    image: "microservice/auth-service:latest"
+    image: "e-commerce/auth-service:latest"
+    container_name: "ECommerce.AuthService"
+    depends_on:
+      - consul
     networks:
       - app_network
 
@@ -25,7 +30,10 @@ services:
     build:
       context: .
       dockerfile: OrderApi.Dockerfile  
-    image: "microservice/order-service:latest"
+    image: "e-commerce/order-service:latest"
+    container_name: "ECommerce.OrderService"
+    depends_on:
+      - consul
     networks:
       - app_network
 
@@ -33,7 +41,18 @@ services:
     build:
       context: .
       dockerfile: ProductApi.Dockerfile
-    image: "microservice/product-service:latest"
+    image: "e-commerce/product-service:latest"
+    container_name: "ECommerce.ProductService"
+    depends_on:
+      - consul
+    networks:
+      - app_network
+
+  consul:
+    image: "hashicorp/consul:latest"
+    container_name: "ECommerce.Consul"
+    ports:
+      - 8500:8500
     networks:
       - app_network
 

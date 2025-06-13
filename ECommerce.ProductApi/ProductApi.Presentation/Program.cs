@@ -1,8 +1,12 @@
 using ProductApi.Presentation;
+using Steeltoe.Discovery.Client;
+using Steeltoe.Discovery.Consul;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
+
+builder.Services.AddServiceDiscovery(option => option.UseConsul());
 
 builder.Services.AddApiServices(builder.Configuration);
 

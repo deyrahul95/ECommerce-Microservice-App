@@ -3,12 +3,10 @@
         {
             "DownstreamPathTemplate": "/api/auth/{everything}",
             "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "auth-service",
-                    "Port": 8080
-                }
-            ],
+            "ServiceName": "auth-service",
+            "LoadBalancerOptions": {
+                "Type": "RoundRobin"
+            },
             "UpstreamPathTemplate": "/api/auth/{everything}",
             "UpstreamHttpMethod": [
                 "GET",
@@ -25,12 +23,10 @@
         {
             "DownstreamPathTemplate": "/api/users/{everything}",
             "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "auth-service",
-                    "Port": 8080
-                }
-            ],
+            "ServiceName": "auth-service",
+            "LoadBalancerOptions": {
+                "Type": "RoundRobin"
+            },
             "UpstreamPathTemplate": "/api/users/{everything}",
             "UpstreamHttpMethod": [
                 "GET"
@@ -50,12 +46,10 @@
         {
             "DownstreamPathTemplate": "/api/products",
             "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "product-service",
-                    "Port": 8080
-                }
-            ],
+            "ServiceName": "product-service",
+            "LoadBalancerOptions": {
+                "Type": "RoundRobin"
+            },
             "UpstreamPathTemplate": "/api/products",
             "UpstreamHttpMethod": [
                 "POST"
@@ -75,12 +69,10 @@
         {
             "DownstreamPathTemplate": "/api/products/{everything}",
             "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "product-service",
-                    "Port": 8080
-                }
-            ],
+            "ServiceName": "product-service",
+            "LoadBalancerOptions": {
+                "Type": "RoundRobin"
+            },
             "UpstreamPathTemplate": "/api/products/{everything}",
             "UpstreamHttpMethod": [
                 "GET",
@@ -164,6 +156,12 @@
         "BaseUrl": "http://localhost:8080",
         "RateLimitOptions": {
             "QuotaExceededMessage": "Oops! You have done too many requests. Please relax and try again after sometimes"
+        },
+        "ServiceDiscoveryProvider": {
+            "Scheme": "HTTP",
+            "Host": "consul",
+            "Port": 8500,
+            "Type": "Consul"
         }
     }
 }
