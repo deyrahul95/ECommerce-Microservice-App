@@ -16,6 +16,9 @@ public static class Extensions
     {
         var baseAddress = configuration.GetSection("ApiGateway:BaseAddress").Value;
 
+        services.AddHttpContextAccessor();
+        services.AddTransient<AuthenticatedHttpClientHelper>();
+
         // Register http client service
         services.AddHttpClient(HttpService.HTTP_CLIENT_NAME, client =>
         {
@@ -23,7 +26,8 @@ public static class Extensions
             client.Timeout = TimeSpan.FromSeconds(1);
 
             client.DefaultRequestHeaders.Add("Accept", "application/json");
-        });
+        })
+        .AddHttpMessageHandler<AuthenticatedHttpClientHelper>();
 
         var loggerService = services.BuildServiceProvider().GetRequiredService<ILoggerService>();
 
@@ -32,7 +36,7 @@ public static class Extensions
         {
             ShouldHandle = new PredicateBuilder()
                 .Handle<HttpRequestException>()
-                .Handle<SocketException>()  
+                .Handle<SocketException>()
                 .Handle<TaskCanceledException>(),
             BackoffType = DelayBackoffType.Constant,
             UseJitter = true,
