@@ -7,6 +7,7 @@
             "LoadBalancerOptions": {
                 "Type": "RoundRobin"
             },
+            "UseServiceDiscovery": true,
             "UpstreamPathTemplate": "/api/auth/{everything}",
             "UpstreamHttpMethod": [
                 "GET",
@@ -27,6 +28,7 @@
             "LoadBalancerOptions": {
                 "Type": "RoundRobin"
             },
+            "UseServiceDiscovery": true,
             "UpstreamPathTemplate": "/api/users/{everything}",
             "UpstreamHttpMethod": [
                 "GET"
@@ -50,6 +52,7 @@
             "LoadBalancerOptions": {
                 "Type": "RoundRobin"
             },
+            "UseServiceDiscovery": true,
             "UpstreamPathTemplate": "/api/products",
             "UpstreamHttpMethod": [
                 "POST"
@@ -73,6 +76,7 @@
             "LoadBalancerOptions": {
                 "Type": "RoundRobin"
             },
+            "UseServiceDiscovery": true,
             "UpstreamPathTemplate": "/api/products/{everything}",
             "UpstreamHttpMethod": [
                 "GET",
